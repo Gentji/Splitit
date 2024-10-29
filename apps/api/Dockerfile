@@ -8,8 +8,17 @@ FROM docker.io/node:lts-alpine
 
 ENV HOST=0.0.0.0
 ENV PORT=3000
+ENV TYPEORM_HOST="127.0.0.1"
+ENV TYPEORM_PORT=5432
+ENV TYPEORM_USERNAME="postgres"
+ENV TYPEORM_PASSWORD="760381"
+ENV TYPEORM_DATABASE="postgres"
 
 WORKDIR /app
+
+# Copy the package files first for better caching
+COPY package.json package-lock.json ./
+RUN npm install --omit=dev
 
 RUN addgroup --system api && \
           adduser --system -G api api
